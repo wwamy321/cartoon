@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        #box{
+            position: relative;
+        }
+        #pic_list{
+            list-style: none;
+            height: 300px;
+            width: 500%;
+            padding: 0;
+            margin: 0;
+            position: relative;
+            top:0;
+        }
+
+        .pic{
+            width: 600px;
+            margin: 0;
+        }
+
+        .item{
+            float: left;
+        }
+
+        #box{
+            width: 600px;
+            height: 266px;
+            overflow: hidden;
+            margin: 0 auto;
+            border: 1px solid black;
+            position: relative;
+        }
+        .btn{
+            margin: 10px auto;
+            width: 150px;
+        }
+        #prev{position: absolute;top:50%;left:10px; }
+        #next{position: absolute;top:50%;right:10px;}
+        
+            
+        #box .list{
+            width: 200px;
+            height: 100px;
+            background: #ff0;
+        }
+        #box .list ul{
+            position:absolute;
+            left:50%;
+            bottom:10px;
+            transform: translateX(-50%);
+            display: flex;
+        }
+        #box .list ul li{
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #ccc;
+            list-style: none;
+            margin-right: 40px;
+            cursor:pointer;
+        }
+        #box .list .on{
+            background: #f00;
+        }
+    </style>
+</head>
+<body>
+    <div id="box">
+        <ul id="pic_list">
+            <li class="item"><img class="pic" src="http://images.migudm.cn/group1/M00/25/34/CjB8E1vRYwKAI2lPAAF6aiyC74A963.jpg" /></li>
+            <li class="item"><img class="pic" src="http://images.migudm.cn/group1/M00/25/34/CjB8E1vRYrqAenW4AAFxak_Npw8385.jpg" /></li>
+            <li class="item"><img class="pic" src="http://images.migudm.cn/group1/M00/25/3A/CjB8FFvRYuOAIcTOAAGuVXCiO8g176.jpg" /></li>
+            <li class="item"><img class="pic" src="http://images.migudm.cn/group1/M00/25/34/CjB8E1vRYwKAI2lPAAF6aiyC74A963.jpg" /></li>
+            <li class="item"><img class="pic" src="http://images.migudm.cn/group1/M00/25/34/CjB8E1vRYrqAenW4AAFxak_Npw8385.jpg" /></li>
+        </ul>
+        <div class="list">
+            <ul>
+             <li class="on"></li>
+              <li ></li>
+               <li ></li>
+            </ul>    
+        </div>
+        <div class="btn">
+            <button id="prev">prev</button>
+            <button id="next">next</button>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <script>
+    
+        const images = document.getElementById('pic_list'); //获取列表
+        const list = document.getElementsByClassName('list')[0],
+              li = list.getElementsByTagName('ul')[0].children;
+        let index = 1; //当前显示图片的索引
+        let length = document.getElementsByClassName('pic').length -2;  //获取图片的真实数量，不包括头尾插入的图片
+        var animateTimeId = null, 
+            toggleTimeId = null; //两个用于setInterval方法的Id变量
+        var distance = 0;  //页面滑动的距离
+
+        //初始化时，显示第一张图片，将列表左移600px
+        images.style.left = "-600px";
+
+        //核心代码 页面滑动动画
+        function animate(direction){
+            if( !animateTimeId ){ //当页面正在执行动画时，不能再触发动画 
+            const step = direction === 1 ? -10 : 10  //确定左滑右滑
+
+            animateTimeId = setInterval(function(){
+                distance += Math.abs(step);
+                //每次增加或减少一定值
+                images.style.left =  (parseInt(images.style.left) + step) + 'px';
+
+                if(distance >= 600){//当页面滑动的距离等于或大于图片的宽度时
+                    clearInterval(animateTimeId); //停止动画
+                    animateTimeId = null;
+                    distance = 0;
+                    if(step < 0){ //计算滑动后页面的索引
+                        index += 1;
+                    }else{
+                        index -= 1;
+                    }
+                    if(index === 0){ //如果已滑到列表头部
+                        index = length;
+                        images.style.left = length * (-600) + 'px'; //将列表左移
+                    }else if(index === 4){ //如果已滑到列表尾部
+                        index = 1;
+                        images.style.left = '-600px' //将列表右移
+                    }
+                }
+                lis(index); 
+            }, 5) 
+            } 
+        }
+
+        // li圆圈列表
+        function lis(index){
+            for(let i=0;i<li.length;i++){
+                    li[i].className="";
+                }   
+                li[index-1].className="on";
+        }
+
+        // 圆圈滑动
+        function show(){
+            for(let j=0;j<li.length;j++){
+                li[j].onmouseover = function(){
+                    index = j + 1;
+                    //images.style.transition = ".6s"
+                    images.style.left = index * (-600) + 'px';
+                    lis(index);
+                }
+            }
+        }
+        show();
+       
+        
+        
+        //初始化，绑定按钮事件，并启动自动轮播
+        function init(){
+            const nextButton = document.getElementById('next');
+            const prevButton = document.getElementById('prev');
+            const box = document.getElementById('box');
+
+            // 点击下一张
+            nextButton.onclick = function(){
+                animate(1); 
+            }
+            //点击上一张
+            prevButton.onclick = function(){
+                animate(2);
+            }
+
+            box.addEventListener('mouseover', function(){
+                clearInterval(toggleTimeId);
+                toggleTimeId = null;
+
+            });
+            box.addEventListener('mouseout', function(){
+                toggleTimeId = setInterval(function(){
+                    animate(1);
+                },2500);
+            });
+
+            toggleTimeId = setInterval(function(){
+                animate(1);
+            },2500);
+
+        
+        }
+        init();
+
+    </script>
+</body>
+</html>
