@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>register</title>
+	<link rel="stylesheet" href="css/reset.css">
+	<style>
+		body{background: #FBFCFE;}
+		header{
+			height: 75px;
+			width: 100%;
+			background: #fff;
+			border-bottom:1px solid #eee;
+			box-sizing:border-box;
+		}
+		.logo{
+			width: 1020px;
+			height: 100%;
+			margin:0px auto;
+		}
+		.logo a{
+			display: inline-block;
+			background:url(images/register/logo-skin.png) no-repeat 0px -43px;
+			width: 110px;
+			height: 32px;
+			margin-top: 20px;
+		}
+		.wrap{
+			width: 1020px;
+			margin:0px auto;
+		}
+		.main-center{
+			width: 980px;
+			height: 580px;
+			background: #fff;
+			border-radius: 20px;
+			margin:40px auto;
+			box-shadow: 0px 0px 5px #ccc
+		}
+		.main-title{
+			width: 90%;
+			height: 60px;
+			border-bottom:1px solid #ccc;
+			margin:0px auto;
+		}
+		.main-title p{
+			line-height: 60px;
+			font-size: 16px;
+		}
+		.main-con{
+			width: 56%;
+			text-align: center;
+			margin:60px auto;
+			font-size: 12px;
+		}
+		.main-con input{padding:10px;border:1px solid #d5d5d5;outline: none;border-radius: 5px;margin-left: 10px;cursor: pointer;}
+		.con-yzm,
+		.con-del{margin:20px auto;}
+		.con-title{font-size: 20px;}
+		.con-detail{color:#999;margin:20px auto;}
+		.con-del>input,
+		.con-pwd>input{width: 300px;}
+		.con-yzm input[type=button]{width: 120px;color:#fff;margin-right:10px;}
+		.con-register>input{
+			width: 300px;
+			background: #FF5267;
+			color:#fff;
+			border:none;
+			margin-top: 30px;
+		}
+		.tck{
+			position: fixed;
+			top:0px;
+			left:0px;
+			right:0px;
+			bottom:0px;
+			background:rgba(0,0,0,.1);
+			z-index: 1;
+			display: none;
+		}
+		.tck .box{
+			width: 400px;
+			height: 160px;
+			background: #fff;
+			position: absolute;
+			top:50%;
+			left:50%;
+			transform: translate(-50%,-50%);
+			border-radius: 20px;
+			box-shadow: 0px 0px 5px #ccc;
+			text-align: center;
+			display: none;
+		}
+		.tck .box h1{
+			font-size: 40px;
+			text-align: center;
+			line-height:80px;
+			background:-webkit-linear-gradient(left,#f00,#00f);
+			-webkit-background-clip: text;
+    		color: transparent;
+		}
+		.tck .box button{
+			width: 100px;
+			height: 40px;
+			border:none;
+			color:#fff;
+			background:#FF5267;
+			border-radius: 10px;
+			outline: none;
+			cursor: pointer;
+			margin-top: 20px;	
+		}
+	</style>
+</head>
+<body>
+	<header>
+		<div class="logo">
+			<a href="#"></a>
+		</div>
+	</header>
+	<main>
+		<div class="wrap main">
+			<div class="main-center">
+				<div class="main-title">
+					<p>注册</p>
+				</div>
+				<div class="main-con">
+					<div class="con-title">
+						您正在注册咪咕帐号
+					</div>
+					<div class="con-detail">
+						您可以使用该帐号登录咪咕音乐、咪咕视频、咪咕阅读、咪咕游戏、咪咕圈圈等业务。 
+中国移动用户已默认注册和通行证帐号，可直接登录咪咕业务。
+					</div>
+					<div class="con-del">
+						手机号
+						<input type="text" maxlength="11" placeholder="请输入手机号" onblur="show()">
+					</div>
+					<div class="con-yzm">
+						短信验证码
+						<input type="text" maxlength="6" placeholder="请输入手机验证码">
+						<input type="button" value="获取验证码">
+					</div>
+					<div class="con-pwd">
+						设置密码
+						<input type="password" maxlength="11" placeholder="请输入密码 `">
+					</div>
+					<div class="con-register">
+						<input type="button" value="立即注册">
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="tck">
+			<div class="box">
+				<h1>恭喜你注册成功</h1>
+				<button>返回</button>
+			</div>
+		</div>
+	</main>
+	<script src="js/jquery-1.12.1.js"></script>
+	<script>
+		$(function(){
+			$('input').click(function(){
+				if($(this).val() == ''){
+					$(this).css("border","1px solid #f00")
+				}else{
+					$(this).css("border","")
+				}
+			})
+			$("input[type='button']").click(function(){
+				$(".tck").fadeIn();
+				$(".box").slideDown();
+				$(".box").click(function(){
+					$(this).slideUp();
+					$(".tck").fadeOut();
+					window.location.href="index.html"
+				})
+			})
+		})
+
+	</script>
+</body>
+</html>
